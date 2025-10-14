@@ -20,6 +20,7 @@ package v1alpha1
 import (
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+
 	"volcano.sh/apis/pkg/apis/bus/v1alpha1"
 )
 
@@ -251,6 +252,23 @@ type TaskSpec struct {
 	// Specifies the tasks that this task depends on.
 	// +optional
 	DependsOn *DependsOn `json:"dependsOn,omitempty" protobuf:"bytes,8,opt,name=dependsOn"`
+
+	// PartitionPolicy Specifies the partitionPolicy of task.
+	// +optional
+	PartitionPolicy *PartitionPolicySpec `json:"partitionPolicy,omitempty" protobuf:"bytes,9,opt,name=partitionPolicy"`
+}
+
+type PartitionPolicySpec struct {
+	// TotalPartitions indicates how many groups a set of pods within a task is divided into.
+	// The product of TotalPartitions and PartitionSize should be equal to Replicas.
+	TotalPartitions int32 `json:"totalPartitions,omitempty" protobuf:"bytes,1,opt,name=totalPartitions"`
+
+	// PartitionSize the number of pods included in each group
+	PartitionSize int32 `json:"partitionSize,omitempty" protobuf:"bytes,2,opt,name=partitionSize"`
+
+	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,3,opt,name=networkTopology"`
 }
 
 // JobPhase defines the phase of the job.

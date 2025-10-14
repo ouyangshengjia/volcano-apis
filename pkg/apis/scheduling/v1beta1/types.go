@@ -204,6 +204,32 @@ type PodGroupSpec struct {
 	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
 	// +optional
 	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,5,opt,name=networkTopology"`
+
+	// BunchPolicy defines the policy that indicates dividing all pods within the podGroup into multiple groups.
+	// +optional
+	BunchPolicy []BunchPolicySpec `json:"bunchPolicy,omitempty" protobuf:"bytes,6,opt,name=bunchPolicy"`
+}
+
+type BunchPolicySpec struct {
+	// Name specifies the name of BunchPolicy
+	Name string `json:"name,omitempty" protobuf:"bytes,1,opt,name=name"`
+
+	// MatchPolicy define matching strategies for different groups, where pods with the same labelKey value are grouped together.
+	// The LabelKey in the list is unique.
+	MatchPolicy []MatchPolicySpec `json:"matchPolicy,omitempty" protobuf:"bytes,2,rep,name=matchPolicy"`
+
+	// NetworkTopology defines the NetworkTopology config, this field works in conjunction with network topology feature and hyperNode CRD.
+	// +optional
+	NetworkTopology *NetworkTopologySpec `json:"networkTopology,omitempty" protobuf:"bytes,3,opt,name=networkTopology"`
+
+	// BunchSize defines the number of pods in each sub-affinity group.
+	// +optional
+	BunchSize *int32 `json:"bunchSize,omitempty" protobuf:"bytes,4,opt,name=bunchSize"`
+}
+
+type MatchPolicySpec struct {
+	// LabelKey The pods are grouped according to the LabelKey corresponding to this value.
+	LabelKey string `json:"labelKey,omitempty" protobuf:"bytes,1,opt,name=labelKey"`
 }
 
 type NetworkTopologyMode string
